@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT GPT\u20115 Colorful Background",
+  "version": "1.2.8",
+  "description": "Keep a GPT\u20115\u2011style gradient during chats. Ultrawide presets, sidebar/search/settings glass, bottom anti\u2011band, and Options UI.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://chat.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://chat.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_title": "GPT\u20115 Background"
+  }
+}

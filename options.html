@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>GPT‑5 Background Options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root{ --bg:#0b0b0c; --panel:#121214; --border:#242428; --text:#e9e9ef; --muted:#a3a3ad; --radius:14px; --shadow:0 8px 24px rgba(0,0,0,.35); }
+      *{box-sizing:border-box}
+      html,body{background:var(--bg); color:var(--text); margin:0; font:14px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial}
+      .wrap{max-width:1160px; margin:28px auto; padding:0 16px}
+      h2{font-size:22px; margin:0 0 8px}
+      .sub{color:var(--muted); margin-bottom:18px}
+      .grid{display:grid; grid-template-columns: 1.2fr .9fr; gap:14px}
+      .card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:14px; box-shadow:var(--shadow)}
+      label{display:block; font-weight:600; margin-bottom:6px}
+      textarea{width:100%; min-height:110px; background:#16161a; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+      .preview{width:100%; height:160px; border-radius:12px; border:1px solid var(--border); margin-top:10px}
+      .row{display:flex; align-items:center; gap:12px; margin:8px 0; flex-wrap:wrap}
+      .stack{display:grid; gap:10px}
+      input[type="range"]{width:230px}
+      input[type="number"]{width:110px; background:#16161a; color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 8px}
+      .pill{padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:#17171a; color:#cfcfda}
+      .preset-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:10px}
+      .btn{background:#18181c; color:var(--text); border:1px solid var(--border); padding:10px 12px; border-radius:10px; cursor:pointer}
+      .btn:hover{border-color:#3b3b44}
+      .btn.save{background:linear-gradient(180deg, #1d1f27, #15161b); border-color:#2a2c34}
+      .footer{display:flex; align-items:center; gap:12px; margin-top:12px}
+      .note{color:#a3a3ad; font-size:12px}
+      #gpt5_toast{position:fixed; left:50%; top:16px; transform:translateX(-50%) translateY(-12px); background:#141418; color:#e9e9ef; border:1px solid var(--border); padding:10px 14px; border-radius:10px; box-shadow:var(--shadow); opacity:0; transition:opacity .18s ease, transform .18s ease; z-index:999999;}
+      #gpt5_toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+      @media (max-width: 980px){ .grid{grid-template-columns:1fr} .preview{height:140px} }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h2>GPT‑5 Background Options</h2>
+      <div class="sub">Fine‑tune the look. Presets are ultrawide‑friendly, and you can paste your own CSS background below.</div>
+      <div class="grid">
+        <section class="card">
+          <label for="gradient">CSS Gradient</label>
+          <textarea id="gradient" spellcheck="false"></textarea>
+          <div id="preview" class="preview"></div>
+          <div class="note">Tip: combine multiple <code>radial-gradient()</code> layers with a subtle linear fade to black.</div>
+        </section>
+        <section class="card stack">
+          <div class="row"><label for="dim" style="min-width:120px">Dim overlay</label><input id="dim" type="range" min="0" max="0.6" step="0.01"><span id="dimv" class="pill"></span></div>
+          <div class="row"><label for="blur" style="min-width:120px">Background blur</label><input id="blur" type="range" min="0" max="16" step="1"><span id="blurv" class="pill"></span></div>
+          <div class="row"><label><input id="enableTopFade" type="checkbox"> Enable bottom fade</label><label><input id="composerHole" type="checkbox" checked> Exclude composer area</label></div>
+          <div class="row"><label for="fadeHeightVH" style="min-width:120px">Fade height</label><input id="fadeHeightVH" type="range" min="8" max="28" step="1"><span id="fadev" class="pill"></span></div>
+          <div class="row"><label><input id="sidebarAutoGap" type="checkbox" checked> Auto sidebar gap</label><label>Sidebar gap px <input id="sidebarGapPx" type="number" min="0" step="10" value="280"></label></div>
+          <div class="row"><label><input id="aggressiveFix" type="checkbox" checked> Aggressive bottom fix</label></div>
+          <div class="row"><label for="sidebarGlass" style="min-width:120px">Sidebar glass</label><input id="sidebarGlass" type="range" min="0" max="0.6" step="0.01"><span id="glassv" class="pill"></span></div>
+          <div class="row"><label for="overlayGlass" style="min-width:120px">Overlay glass</label><input id="overlayGlass" type="range" min="0.6" max="1.0" step="0.01"><span id="overlayv" class="pill"></span></div>
+        </section>
+      </div>
+      <section class="card" style="margin-top:14px">
+        <h3 style="margin:0 0 8px">Presets</h3>
+        <div class="preset-grid">
+          <button class="btn" data-preset="intro">Intro look</button>
+          <button class="btn" data-preset="aurora">Aurora</button>
+          <button class="btn" data-preset="midnight">Midnight</button>
+          <button class="btn" data-preset="ember">Ember</button>
+          <button class="btn" data-preset="dusklite">Dusk</button>
+          <button class="btn" data-preset="indigo">Indigo Drift</button>
+          <button class="btn" data-preset="rose">Rose Dust</button>
+          <button class="btn" data-preset="noir">Neon Noir</button>
+        </div>
+        <div class="footer">
+          <button id="save" class="btn save">Save</button>
+          <span class="note">You’ll see a toast up top. Changes apply to open ChatGPT tabs.</span>
+        </div>
+      </section>
+    </div>
+    <div id="gpt5_toast" role="status" aria-live="polite"></div>
+    <script src="options.js" defer></script>
+  </body>
+</html>
